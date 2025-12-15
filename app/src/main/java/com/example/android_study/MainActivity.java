@@ -76,11 +76,49 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btn_Message).setOnClickListener(v -> MessageSend());
     }
 
+
+    //分发流程图可见drawable中的activityevent.png
+    //Window：它是抽象类，用于表示一个界面窗口，唯一的实现是PhoneWindow。每个 Activity 都包含一个 Window 对象，通过该 Window 对象来管理界面的布局、绘制和交互。
+    //DecorView：作为整个界面布局的根节点，负责管理并响应用户的触摸事件。
+    //DecorView 的父类是FrameLayout，FrameLayout没有这个方法的实现，所以再去找FrameLayout的父类ViewGroup(我这里是InterceptLinearLayout 继承的 LinearLayout)
+    //Activity → PhoneWindow → DecorView → ViewGroup → View 事件就是沿着这条链路一层层往下分发的
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        String actionName = replaceAction(ev.getAction());
+
+        Log.d(TAG, "===== Activity 全局分发事件 =====");
+        Log.d(TAG, "事件类型：" + actionName);
+        Log.d(TAG, "绝对屏幕坐标：rawX=" + ev.getRawX() + ", rawY=" + ev.getRawY());
+        Log.d(TAG, "事件分发阶段：Activity.dispatchTouchEvent");
+        Log.d(TAG, "是否是多点触控：" + (ev.getPointerCount() > 1));
+        Log.d(TAG, "================================\n");
+
+        //TODO 在这里可以拦截事件，然后在onTouchEvent方法中消费掉onTouchEvent（ev.getAction()）
+
+        //  执行系统默认的分发逻辑（核心！必须调用super，否则页面所有触摸失效）
+        // 返回值：系统默认分发的结果（true=事件被消费，false=未被消费）
+        boolean defaultResult = super.dispatchTouchEvent(ev);
+
+        Log.d(TAG, "Activity.dispatchTouchEvent 分发结果：" + (defaultResult ? "事件已消费" : "事件未消费，向上回传"));
+
+        return defaultResult;
+    }
+
+
+    // 拦截后，事件会进入ViewGroup的onTouchEvent
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        Log.d(TAG, "MainActivity 消费拦截的事件：" + replaceAction(event.getAction()));
+        return true; // 消费拦截的事件
+    }
+
+
     /**
      * 绑定其他事件
      */
     private void bindOtherEvents() {
         // 1. 设置 OnTouchListener 监听所有触摸事件
+        //view 的 事件分发流程可以参考 viewevent.png
         findViewById(R.id.btn_touch).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {

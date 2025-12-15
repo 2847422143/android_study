@@ -9,7 +9,7 @@ import android.widget.LinearLayout;
 
 // 自定义LinearLayout，用于演示事件拦截
 public class InterceptLinearLayout extends LinearLayout {
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "InterceptLinearLayout";
     private boolean isIntercept = true; // 是否拦截btn_touch的事件
 
     public InterceptLinearLayout(Context context) {
@@ -21,6 +21,7 @@ public class InterceptLinearLayout extends LinearLayout {
     }
 
     //事件分发的入口方法
+    //ViewGroup的分发机制可以参考viewgroupevent.png
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         boolean intercepted = false;
@@ -53,7 +54,7 @@ public class InterceptLinearLayout extends LinearLayout {
         return handled;
     }
 
-    // ViewGroup核心拦截方法：返回true则拦截事件（不向下传递给子View）
+    // ViewGroup核心拦截方法：返回true则拦截事件（不向下传递给子View）只有ViewGroup有
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         int action = ev.getAction();
@@ -66,8 +67,8 @@ public class InterceptLinearLayout extends LinearLayout {
 //            intercept = true; // 拦截DOWN事件，后续事件都不会传给btn_touch
 //            Log.d(TAG, "InterceptLinearLayout 拦截了事件：" + actionName);
 //        }
-        if (isIntercept && action == MotionEvent.ACTION_MOVE) {
-            intercept = true; // 拦截MOVE事件
+        if (isIntercept && action == MotionEvent.ACTION_UP) {
+            intercept = true; // 拦截UP事件
             Log.d(TAG, "InterceptLinearLayout 拦截了事件：" + actionName);
         }
 
