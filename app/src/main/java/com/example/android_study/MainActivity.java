@@ -48,9 +48,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // 控制根布局是否拦截btn_touch的事件
-        InterceptLinearLayout rootLayout = findViewById(R.id.root_layout);
-        rootLayout.setIntercept(true); // true=拦截，false=不拦截
+        // 事件分发测试用
+//        InterceptLinearLayout rootLayout = findViewById(R.id.root_layout);
+//        rootLayout.setIntercept(true); // true=拦截，false=不拦截
         // 绑定按钮点击事件
         bindButtonClickEvents();
         // 绑定其他事件
@@ -85,13 +85,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         String actionName = replaceAction(ev.getAction());
-
-        Log.d(TAG, "===== Activity 全局分发事件 =====");
-        Log.d(TAG, "事件类型：" + actionName);
-        Log.d(TAG, "绝对屏幕坐标：rawX=" + ev.getRawX() + ", rawY=" + ev.getRawY());
-        Log.d(TAG, "事件分发阶段：Activity.dispatchTouchEvent");
-        Log.d(TAG, "是否是多点触控：" + (ev.getPointerCount() > 1));
-        Log.d(TAG, "================================\n");
+//        事件分发测试用
+//        Log.d(TAG, "===== Activity 全局分发事件 =====");
+//        Log.d(TAG, "事件类型：" + actionName);
+//        Log.d(TAG, "绝对屏幕坐标：rawX=" + ev.getRawX() + ", rawY=" + ev.getRawY());
+//        Log.d(TAG, "事件分发阶段：Activity.dispatchTouchEvent");
+//        Log.d(TAG, "是否是多点触控：" + (ev.getPointerCount() > 1));
+//        Log.d(TAG, "================================\n");
 
         //TODO 在这里可以拦截事件，然后在onTouchEvent方法中消费掉onTouchEvent（ev.getAction()）
 
@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         // 返回值：系统默认分发的结果（true=事件被消费，false=未被消费）
         boolean defaultResult = super.dispatchTouchEvent(ev);
 
-        Log.d(TAG, "Activity.dispatchTouchEvent 分发结果：" + (defaultResult ? "事件已消费" : "事件未消费，向上回传"));
+//        Log.d(TAG, "Activity.dispatchTouchEvent 分发结果：" + (defaultResult ? "事件已消费" : "事件未消费，向上回传"));
 
         return defaultResult;
     }
