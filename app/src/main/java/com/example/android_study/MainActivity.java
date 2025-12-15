@@ -7,6 +7,7 @@ import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.net.Uri;
@@ -23,6 +24,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.example.android_study.Event.InterceptLinearLayout;
+import com.example.android_study.broadcast.DynamicBroadcase;
 import com.example.android_study.observer.Observer;
 import com.example.android_study.observer.ObserverEX;
 import com.example.android_study.observer.ObserverImpl;
@@ -43,7 +45,8 @@ public class MainActivity extends AppCompatActivity {
     private Messenger messenger;
     private ObserverImpl ObserverImpl1 = new ObserverImpl("小周");
     private ObserverImpl ObserverImpl2 = new ObserverImpl("小李");
-
+    private DynamicBroadcase dynamicBroadcase;
+    public static final String ACTION_TEST = "android.intent.action.LXC.TEST";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         bindButtonClickEvents();
         // 绑定其他事件
         bindOtherEvents();
+        registerAction();
     }
     /**
      * 绑定所有按钮的点击事件
@@ -74,8 +78,22 @@ public class MainActivity extends AppCompatActivity {
 
         // 按钮5：Message通信
         findViewById(R.id.btn_Message).setOnClickListener(v -> MessageSend());
+
+        // 按钮6：静态广播
+        findViewById(R.id.btn_localbroad).setOnClickListener(v -> broadSend());
+
     }
 
+    /**
+     * 初始化所有需要初始化的东西
+     */
+    private void registerAction() {
+        dynamicBroadcase = new DynamicBroadcase();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ACTION_TEST);
+        registerReceiver(dynamicBroadcase,intentFilter);
+
+    }
 
     //分发流程图可见drawable中的activityevent.png
     //Window：它是抽象类，用于表示一个界面窗口，唯一的实现是PhoneWindow。每个 Activity 都包含一个 Window 对象，通过该 Window 对象来管理界面的布局、绘制和交互。
@@ -297,6 +315,19 @@ public class MainActivity extends AppCompatActivity {
                 mServerMessenger = null;
             }
         }, BIND_AUTO_CREATE);
+    }
+
+    private void broadSend(){
+        //TODO 发送广播
+        Intent intent = new Intent();
+        intent.setAction(ACTION_TEST);
+        intent.putExtra("name",TAG);
+        intent.putExtra("message","今天天气");
+        // 关键：指定广播接收方的包名（当前应用包名）
+        intent.setPackage(getPackageName());
+        // 可选：添加FLAG，允许后台执行（部分场景需要）
+        intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
+        sendBroadcast(intent);
     }
 
     private String replaceAction(int action){

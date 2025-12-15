@@ -49,6 +49,15 @@
             </intent-filter>
         </service>
 
+        <!--        静态注册广播-->
+        <receiver android:name=".broadcast.LocalBroadcast"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.LXC.TEST"/>
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>
