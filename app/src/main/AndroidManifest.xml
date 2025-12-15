@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Android_study"
+        tools:targetApi="31">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <provider
+            android:name=".contentProvider.MyProvider"
+            android:authorities="com.human.lxczy" />
+
+
+        <!-- 关键：指定独立进程（:remote表示应用内的私有进程） -->
+        <!-- 同一个应用内，exported设为false即可（无需对外暴露） -->
+        <service
+            android:name=".aidl.AidlService"
+            android:exported="false"
+            android:process=":aidl">
+            <intent-filter>
+                <action android:name="com.example.myapplication.MY_REMOTE_SERVICE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".Messenger.MessengerService"
+            android:process=":Messenger"
+            android:exported="true"> <!-- 关键：允许其他应用访问 -->
+            <intent-filter>
+                <!-- 自定义 Action，供客户端绑定 -->
+                <action android:name="com.example.messengerserver.MESSENGER_SERVICE" />
+                <!-- 可选：添加 category，避免冲突 -->
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
+
+    </application>
+
+</manifest>

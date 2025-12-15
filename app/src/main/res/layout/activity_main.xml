@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.example.android_study.Event.InterceptLinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="20dp"
+    tools:context=".MainActivity">
+
+    <!-- 按钮0：触摸事件 -->
+    <Button
+    android:id="@+id/btn_touch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="触摸事件"
+        android:layout_marginBottom="10dp"/>
+
+    <!-- 按钮1：触发观察者模式 -->
+    <Button
+        android:id="@+id/btn_observer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="观察者模式测试"
+        android:layout_marginBottom="10dp"/>
+
+    <!-- 按钮2：触发ContentProvider操作 -->
+    <Button
+        android:id="@+id/btn_content_provider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ContentProvider通信"
+        android:layout_marginBottom="10dp"/>
+
+    <!-- 按钮3：触发SharedPreferences操作 -->
+    <Button
+        android:id="@+id/btn_sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="SharedPreferences操作"
+        android:layout_marginBottom="10dp"/>
+
+    <!-- 按钮4：触发AIDL通信 -->
+    <Button
+        android:id="@+id/btn_aidl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="AIDL跨进程通信"/>
+
+    <!-- 按钮5：触发Message通信 -->
+    <Button
+        android:id="@+id/btn_Message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Message跨进程通信"/>
+</com.example.android_study.Event.InterceptLinearLayout>
