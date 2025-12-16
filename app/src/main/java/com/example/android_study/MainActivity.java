@@ -22,8 +22,12 @@ import android.os.RemoteException;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android_study.Event.InterceptLinearLayout;
+import com.example.android_study.XFS.XfSparkManager;
 import com.example.android_study.broadcast.DynamicBroadcase;
 import com.example.android_study.observer.Observer;
 import com.example.android_study.observer.ObserverEX;
@@ -47,6 +51,10 @@ public class MainActivity extends AppCompatActivity {
     private ObserverImpl ObserverImpl2 = new ObserverImpl("小李");
     private DynamicBroadcase dynamicBroadcase;
     public static final String ACTION_TEST = "android.intent.action.LXC.TEST";
+    private EditText etInput;
+    private TextView tvResult;
+    // 拼接流式返回的内容
+    private StringBuilder replyContent = new StringBuilder();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +90,8 @@ public class MainActivity extends AppCompatActivity {
         // 按钮6：静态广播
         findViewById(R.id.btn_localbroad).setOnClickListener(v -> broadSend());
 
+        // 按钮7：星火大模型
+        findViewById(R.id.btn_XFS).setOnClickListener(v -> modelSend());
     }
 
     /**
@@ -92,6 +102,9 @@ public class MainActivity extends AppCompatActivity {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ACTION_TEST);
         registerReceiver(dynamicBroadcase,intentFilter);
+
+        etInput = findViewById(R.id.et_input);
+        tvResult = findViewById(R.id.tv_result);
 
     }
 
@@ -328,6 +341,36 @@ public class MainActivity extends AppCompatActivity {
         // 可选：添加FLAG，允许后台执行（部分场景需要）
         intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
         sendBroadcast(intent);
+    }
+
+    private void modelSend(){
+        String input = etInput.getText().toString().trim();
+        if (input.isEmpty()) {
+            Toast.makeText(this, "请输入问题", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // 清空历史回复
+        replyContent.setLength(0);
+        tvResult.setText("");
+        XfSparkManager.chatWithSpark(input, new XfSparkManager.ChatCallback() {
+            @Override
+            public void onStreamData(String partialContent) {
+                // 逐字拼接并显示
+                replyContent.append(partialContent);
+                tvResult.setText(replyContent.toString());
+            }
+
+            @Override
+            public void onSuccess() {
+                Toast.makeText(MainActivity.this, "回复完成", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(String errorMsg) {
+                tvResult.setText("请求失败：" + errorMsg);
+            }
+        });
     }
 
     private String replaceAction(int action){

@@ -71,7 +71,40 @@
             android:id="@+id/btn_localbroad"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:text="广播触发" />
+
+        <TextView
+            android:layout_marginTop="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="-------- 以下是大模型对接 --------"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:textSize="20dp"
+            android:gravity="center"/>
+
+        <EditText
+            android:id="@+id/et_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:hint="请输入你要提问的内容"
+            android:minLines="3"/>
+
+        <!-- 按钮7：星火大模型 -->
+        <Button
+            android:id="@+id/btn_XFS"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="星火大模型" />
+
+        <TextView
+            android:id="@+id/tv_result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"/>
 
     </LinearLayout><!--</com.example.android_study.Event.InterceptLinearLayout>-->
 </ScrollView>

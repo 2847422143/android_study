@@ -29,6 +29,12 @@ android {
 }
 
 dependencies {
+    // 网络请求
+    implementation 'com.squareup.okhttp3:okhttp:4.11.0'
+    // JSON解析
+    implementation 'org.json:json:20231013'
+    // 协程（可选，也可用AsyncTask）
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
 
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.5.0'
