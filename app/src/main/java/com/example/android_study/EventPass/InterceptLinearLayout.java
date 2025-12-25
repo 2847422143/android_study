@@ -1,4 +1,4 @@
-package com.example.android_study.Event;
+package com.example.android_study.EventPass;
 
 import android.content.Context;
 import android.util.AttributeSet;

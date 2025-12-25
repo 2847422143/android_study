@@ -74,6 +74,21 @@
             android:layout_marginBottom="10dp"
             android:text="广播触发" />
 
+        <!-- 按钮7：Event -->
+        <Button
+            android:id="@+id/btn_rei_eventBus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="注册EventBus" />
+
+        <Button
+            android:id="@+id/btn_send_normal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="EventBus触发事件" />
+
         <TextView
             android:layout_marginTop="40dp"
             android:layout_width="match_parent"
@@ -92,7 +107,6 @@
             android:hint="请输入你要提问的内容"
             android:minLines="3"/>
 
-        <!-- 按钮7：星火大模型 -->
         <Button
             android:id="@+id/btn_XFS"
             android:layout_width="match_parent"

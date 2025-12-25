@@ -26,13 +26,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.android_study.Event.InterceptLinearLayout;
+import com.example.android_study.EventBus.MessageEvent;
+import com.example.android_study.EventBus.StickyMessageEvent;
 import com.example.android_study.XFS.XfSparkManager;
 import com.example.android_study.broadcast.DynamicBroadcase;
-import com.example.android_study.observer.Observer;
 import com.example.android_study.observer.ObserverEX;
 import com.example.android_study.observer.ObserverImpl;
 import com.example.android_study.sharedPreferences.sharedPreferencesImpl;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -90,7 +94,10 @@ public class MainActivity extends AppCompatActivity {
         // 按钮6：静态广播
         findViewById(R.id.btn_localbroad).setOnClickListener(v -> broadSend());
 
-        // 按钮7：星火大模型
+        // 按钮E：静态广播
+        findViewById(R.id.btn_send_normal).setOnClickListener(v -> EventBusSend());
+
+        // 星火大模型
         findViewById(R.id.btn_XFS).setOnClickListener(v -> modelSend());
     }
 
@@ -105,7 +112,6 @@ public class MainActivity extends AppCompatActivity {
 
         etInput = findViewById(R.id.et_input);
         tvResult = findViewById(R.id.tv_result);
-
     }
 
     //分发流程图可见drawable中的activityevent.png
@@ -184,6 +190,11 @@ public class MainActivity extends AppCompatActivity {
         // 2. 补充 OnClickListener（对比 OnTouchListener 优先级）
         findViewById(R.id.btn_touch).setOnClickListener(v -> {
             Log.d(TAG, "btn_touch onClick 触发（说明 OnTouch 未消费事件）");
+        });
+
+        //注册EventBus
+        findViewById(R.id.btn_rei_eventBus).setOnClickListener(v -> {
+            EventBus.getDefault().register( this);
         });
     }
 
@@ -396,5 +407,35 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         return actionName;
+    }
+
+
+    private void EventBusSend(){
+        EventBus.getDefault().post(new MessageEvent("这是一条普通事件消息！"));
+        EventBus.getDefault().postSticky(new StickyMessageEvent("这是一条粘性事件消息（先发送后注册仍能接收）！"));
+    }
+
+    /**
+     * 订阅方法：接收普通事件
+     * ThreadMode.MAIN：在主线程（UI 线程）中执行，可直接更新 UI
+     * 先订阅，后发送
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onReceiveMessageEvent(MessageEvent event) {
+        // 更新 UI，显示接收的消息
+        String receiveMsg = "收到普通事件：" + event.getMessage();
+        Log.d(TAG,"receiveMsg = "+receiveMsg);
+    }
+
+    /**
+     * 订阅方法：接收粘性事件
+     * sticky = true：标记为粘性事件订阅者
+     * 先发送，后订阅，仍能接收
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    public void onReceiveStickyMessageEvent(StickyMessageEvent event) {
+        // 更新 UI，显示接收的粘性消息
+        String stickyMsg = "收到粘性事件：" + event.getStickyMessage();
+        Log.d(TAG,"stickyMsg = "+ stickyMsg);
     }
 }

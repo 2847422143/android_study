@@ -29,6 +29,8 @@ android {
 }
 
 dependencies {
+    // EventBus 核心依赖
+    implementation 'org.greenrobot:eventbus:3.3.1'
     // 网络请求
     implementation 'com.squareup.okhttp3:okhttp:4.11.0'
     // JSON解析
