@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.example.android_study.EventBus.MessageEvent;
 import com.example.android_study.EventBus.StickyMessageEvent;
+import com.example.android_study.KotlinLearn.LearnKotlinKt;
 import com.example.android_study.XFS.XfSparkManager;
 import com.example.android_study.broadcast.DynamicBroadcase;
 import com.example.android_study.observer.ObserverEX;
@@ -39,6 +40,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 public class MainActivity extends AppCompatActivity {
+    //AppCompatActivity是AndroidX中提供的一种向下兼容的Activity
     private static final String TAG = "MainActivity";
     // AIDL接口实例（用于跨进程调用）
     private IMyAidlInterface mAidlInterface;
@@ -71,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
         // 绑定其他事件
         bindOtherEvents();
         registerAction();
+        LearnKotlinKt.aaa();
     }
     /**
      * 绑定所有按钮的点击事件
