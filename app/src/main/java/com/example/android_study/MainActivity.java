@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.example.android_study.EventBus.MessageEvent;
 import com.example.android_study.EventBus.StickyMessageEvent;
+import com.example.android_study.KotlinLearn.LambdaKt;
 import com.example.android_study.KotlinLearn.LearnKotlinKt;
 import com.example.android_study.XFS.XfSparkManager;
 import com.example.android_study.broadcast.DynamicBroadcase;
@@ -74,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         bindOtherEvents();
         registerAction();
         LearnKotlinKt.aaa();
+        LambdaKt.aa();
     }
     /**
      * 绑定所有按钮的点击事件
