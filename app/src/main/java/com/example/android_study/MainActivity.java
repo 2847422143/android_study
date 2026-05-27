@@ -66,6 +66,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //收到Intent
+        Intent intent = getIntent();
+        String date = intent.getStringExtra("date");
+        Log.d(TAG, "Received date: " + date);
+
         // 事件分发测试用
 //        InterceptLinearLayout rootLayout = findViewById(R.id.root_layout);
 //        rootLayout.setIntercept(true); // true=拦截，false=不拦截
@@ -81,6 +86,13 @@ public class MainActivity extends AppCompatActivity {
      * 绑定所有按钮的点击事件
      */
     private void bindButtonClickEvents() {
+        findViewById(R.id.test).setOnClickListener(v -> {
+            //销毁之后返回结果
+            Intent intent = new Intent();
+            intent.putExtra("data_return", "Hello from MainActivity");
+            setResult(RESULT_OK, intent);
+            finish();
+        });
         // 按钮1：观察者模式
         findViewById(R.id.btn_observer).setOnClickListener(v -> observerSend());
 
@@ -442,5 +454,18 @@ public class MainActivity extends AppCompatActivity {
         // 更新 UI，显示接收的粘性消息
         String stickyMsg = "收到粘性事件：" + event.getStickyMessage();
         Log.d(TAG,"stickyMsg = "+ stickyMsg);
+    }
+
+    /**
+     * 按下返回键，销毁活动
+     */
+    @Override
+    public void onBackPressed() {
+        //销毁之后返回结果
+        super.onBackPressed();
+        Intent intent = new Intent();
+        intent.putExtra("data_return", "Hello from MainActivity");
+        setResult(RESULT_OK, intent);
+        finish();
     }
 }

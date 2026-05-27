@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <!--    网络权限-->
+    <!-- 网络权限 -->
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,8 +13,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Android_study"
         tools:targetApi="31">
+
+        <!--       SecondActivity引用对话框主题-->
         <activity
-            android:name=".MainActivity"
+            android:name=".AcitivityStudy.SecondActivity"
+            android:theme="@android:style/Theme.Dialog"
+            android:exported="false" />
+        <activity
+            android:name=".AcitivityStudy.FirstActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,13 +28,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.example.myapplication.MY_ACTION" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="com.example.myapplication.MY_CATEGORY" />
+                <!-- android.intent.category.DEFAULT 是一种默认的category ， startActivity 会自动添加到intent 中 -->
+            </intent-filter>
+        </activity>
 
         <provider
             android:name=".contentProvider.MyProvider"
-            android:authorities="com.human.lxczy" />
-
-
-        <!-- 关键：指定独立进程（:remote表示应用内的私有进程） -->
+            android:authorities="com.human.lxczy" /> <!-- 关键：指定独立进程（:remote表示应用内的私有进程） -->
         <!-- 同一个应用内，exported设为false即可（无需对外暴露） -->
         <service
             android:name=".aidl.AidlService"
@@ -37,28 +52,26 @@
                 <action android:name="com.example.myapplication.MY_REMOTE_SERVICE" />
             </intent-filter>
         </service>
-
         <service
             android:name=".Messenger.MessengerService"
-            android:process=":Messenger"
-            android:exported="true"> <!-- 关键：允许其他应用访问 -->
+            android:exported="true"
+            android:process=":Messenger"> <!-- 关键：允许其他应用访问 -->
             <intent-filter>
+
                 <!-- 自定义 Action，供客户端绑定 -->
                 <action android:name="com.example.messengerserver.MESSENGER_SERVICE" />
                 <!-- 可选：添加 category，避免冲突 -->
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-        </service>
-
-        <!--        静态注册广播-->
-        <receiver android:name=".broadcast.LocalBroadcast"
+        </service> <!-- 静态注册广播 -->
+        <receiver
+            android:name=".broadcast.LocalBroadcast"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
-                <action android:name="android.intent.action.LXC.TEST"/>
+                <action android:name="android.intent.action.LXC.TEST" />
             </intent-filter>
         </receiver>
-
     </application>
 
 </manifest>
