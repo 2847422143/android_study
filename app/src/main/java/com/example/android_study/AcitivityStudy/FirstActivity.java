@@ -6,12 +6,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.android_study.MainActivity;
@@ -26,6 +30,13 @@ public class FirstActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate");
         setContentView(R.layout.first_layout); //为当前活动Activity 加载一个布局
 
+        //隐藏系统自带的标题栏
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.hide();
+        }
+
+        ActivityCollector.addActivity(this);
         if(savedInstanceState != null ){
             //回收保存的数据，重新获取
             savedInstanceState.getString("aaa");
@@ -38,7 +49,7 @@ public class FirstActivity extends AppCompatActivity {
 //            finish();//销毁当前活动  效果和按下back按键是一样的
 
             //显性Intent
-            Intent intent = new Intent(FirstActivity.this, MainActivity.class);
+            Intent intent = new Intent(FirstActivity.this, ThridActivity.class);
             intent.putExtra("date","hello");
 //            startActivity(intent); // 专门用于启动活动
             startActivityForResult(intent, 1); //期望启动的活动销毁后返回数据给这个活动
@@ -75,9 +86,33 @@ public class FirstActivity extends AppCompatActivity {
 
         Button button2 = findViewById(R.id.button2);
         button2.setOnClickListener(v -> {
-            Intent intent = new Intent(FirstActivity.this, SecondActivity.class);
-            startActivity(intent);
+            //提示对话框
+            AlertDialog.Builder builder = new AlertDialog.Builder(FirstActivity.this);
+            builder.setTitle("This is a Dialog");//标题
+            builder.setMessage("Something Important");//内容
+            builder.setPositiveButton("OK", (dialog, which) -> {
+                Intent intent = new Intent(FirstActivity.this, SecondActivity.class);
+                startActivity(intent);
+            });
+            builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
+            builder.show();
         });
+        ProgressBar progressBar = findViewById(R.id.progress_bar);
+
+        ProgressBar progressBar2 = findViewById(R.id.progress_bar2);
+
+        Button button3 = findViewById(R.id.button3);
+        button3.setOnClickListener(v -> {
+            if(progressBar.getVisibility() == View.GONE)
+            progressBar.setVisibility(View.VISIBLE);
+            else
+            progressBar.setVisibility(View.GONE);
+
+            int progress = progressBar2.getProgress();
+            progress += 10;
+            progressBar2.setProgress(progress);
+        });
+
     }
 
     //重写onCreateOptionsMenu 去关联自己的菜单控件
@@ -149,6 +184,7 @@ public class FirstActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         Log.d(TAG, "onDestroy");
+        ActivityCollector.removeActivity(this);
         super.onDestroy();
     }
 

@@ -4,15 +4,48 @@
     android:orientation="vertical"
     android:layout_height="match_parent">
 
+    <com.example.android_study.AcitivityStudy.TitleLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <!-- 你在控件中设置的文字不全是大写，但是系统显示出来全是大写
+    那是因为系统会对Button中的所有英文字母自动进行大写转换
+    想要不会这样，就需要加入android:textAllCaps="false"· -->
     <Button
         android:id="@+id/button1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Button 1"/>
+        android:text="Button 1"
+        android:textAllCaps="false"/>
 
     <Button
         android:id="@+id/button2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Button 2"/>
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="显示 3"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="2"
+        android:hint="aaaaaaaa"/>
+
+<!--    进度条-->
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <ProgressBar
+        android:id="@+id/progress_bar2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:max="100"/>
 </LinearLayout>

@@ -13,12 +13,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Android_study"
         tools:targetApi="31">
-
-        <!--       SecondActivity引用对话框主题-->
+        <activity
+            android:name=".AcitivityStudy.ThridActivity"
+            android:exported="false" />
+        <!-- SecondActivity引用对话框主题 -->
         <activity
             android:name=".AcitivityStudy.SecondActivity"
-            android:theme="@android:style/Theme.Dialog"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@android:style/Theme.Dialog" />
         <activity
             android:name=".AcitivityStudy.FirstActivity"
             android:exported="true">
