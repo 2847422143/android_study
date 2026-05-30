@@ -14,9 +14,11 @@
         android:theme="@style/Theme.Android_study"
         tools:targetApi="31">
         <activity
-            android:name=".AcitivityStudy.ThridActivity"
+            android:name=".AcitivityStudy.FourActivity"
             android:exported="false" />
-        <!-- SecondActivity引用对话框主题 -->
+        <activity
+            android:name=".AcitivityStudy.ThridActivity"
+            android:exported="false" /> <!-- SecondActivity引用对话框主题 -->
         <activity
             android:name=".AcitivityStudy.SecondActivity"
             android:exported="false"
@@ -44,7 +46,8 @@
 
         <provider
             android:name=".contentProvider.MyProvider"
-            android:authorities="com.human.lxczy" /> <!-- 关键：指定独立进程（:remote表示应用内的私有进程） -->
+            android:authorities="com.human.lxczy"
+            android:exported="false" /> <!-- 关键：指定独立进程（:remote表示应用内的私有进程） -->
         <!-- 同一个应用内，exported设为false即可（无需对外暴露） -->
         <service
             android:name=".aidl.AidlService"

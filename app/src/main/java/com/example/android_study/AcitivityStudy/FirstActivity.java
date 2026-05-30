@@ -49,7 +49,7 @@ public class FirstActivity extends AppCompatActivity {
 //            finish();//销毁当前活动  效果和按下back按键是一样的
 
             //显性Intent
-            Intent intent = new Intent(FirstActivity.this, ThridActivity.class);
+            Intent intent = new Intent(FirstActivity.this, FourActivity.class);
             intent.putExtra("date","hello");
 //            startActivity(intent); // 专门用于启动活动
             startActivityForResult(intent, 1); //期望启动的活动销毁后返回数据给这个活动
