@@ -45,3 +45,38 @@
     View是Android中最基本的一种UI组件，它可以在屏幕上绘制一块矩形区域，并能响应这块区域的各种事件
 
 9.碎片（Fragment）是一种可以嵌入活动当中的ui片段，它能让程序更加合理和充分的利用大屏幕的空间
+
+10.碎片的生命周期
+    四个状态 1.运行状态:碎片可见,且关联的活动处于运行状态
+            2.暂停状态:活动进入暂停状态时,相关联的碎片也进入暂停状态
+            3.停止状态:活动进入停止状态时,与它相关联的碎片也进入停止状态,或者通过调用FragmentTransaction的remove(),replace方法将碎片从活动中移除
+                      但如果在事务提交之前调用anToBackStack()方法,这时候的碎片也会进入停止状态
+            4.销毁状态:活动进入销毁状态或者没有调用anToBackStack()
+
+    完整生命周期可参考img_5
+    添加一个碎片
+        |
+    onAttach():当碎片和活动建立关联的时候调用
+        |
+    onCreate()
+        |
+    onCreateView():加载布局
+        |
+    onActivityOnCreate():确保与碎片相关联的活动一定已经创建完毕的时候调用
+        |
+    onStart()
+        |
+    onResume()
+        |
+    碎片已激活
+        |
+    onPause()
+        |
+    onStop()
+        |
+    onDestroyView():移除碎片关联的视图
+    如果添加了anToBackStack(),从返回栈中回到上一个碎片 ,生命周期就从onCreateView()开始
+        |
+    OnDestroy()
+        |
+    OnDetach():碎片和活动解除关联的时候调用
