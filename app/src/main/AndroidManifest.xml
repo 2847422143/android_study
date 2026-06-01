@@ -14,6 +14,12 @@
         android:theme="@style/Theme.Android_study"
         tools:targetApi="31">
         <activity
+            android:name=".AcitivityStudy.SevenActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AcitivityStudy.SixActivity"
+            android:exported="false" />
+        <activity
             android:name=".AcitivityStudy.FiveActivity"
             android:exported="false" />
         <activity
