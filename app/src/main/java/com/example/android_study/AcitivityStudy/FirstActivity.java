@@ -91,7 +91,7 @@ public class FirstActivity extends AppCompatActivity {
             builder.setTitle("This is a Dialog");//标题
             builder.setMessage("Something Important");//内容
             builder.setPositiveButton("OK", (dialog, which) -> {
-                Intent intent = new Intent(FirstActivity.this, SecondActivity.class);
+                Intent intent = new Intent(FirstActivity.this, MainActivity.class);
                 startActivity(intent);
             });
             builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());

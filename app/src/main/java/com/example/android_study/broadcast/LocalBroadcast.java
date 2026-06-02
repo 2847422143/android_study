@@ -15,5 +15,7 @@ public class LocalBroadcast extends BroadcastReceiver {
                 "\n Action = " + intent.getAction() +
                 "\n name = " + intent.getStringExtra("name") +
                 "\n message = " + intent.getStringExtra("message"));
+        abortBroadcast();
+        //中止有序广播，之后的广播接收器将无法收到该广播
     }
 }

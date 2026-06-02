@@ -82,6 +82,22 @@
             android:layout_marginBottom="10dp"
             android:text="广播触发" />
 
+        <!-- 按钮6：有序广播 -->
+        <Button
+            android:id="@+id/btn_localbroad_order"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="有序广播" />
+
+        <!-- 按钮6：本地广播 -->
+        <Button
+            android:id="@+id/btn_localbroad_normal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="本地广播" />
+
         <!-- 按钮7：Event -->
         <Button
             android:id="@+id/btn_rei_eventBus"

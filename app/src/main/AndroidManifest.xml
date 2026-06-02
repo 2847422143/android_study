@@ -82,10 +82,12 @@
             android:name=".broadcast.LocalBroadcast"
             android:enabled="true"
             android:exported="false">
-            <intent-filter>
+            <intent-filter android:priority="100">
                 <action android:name="android.intent.action.LXC.TEST" />
+                <action android:name="android.intent.action.LXC.TEST1" />
             </intent-filter>
         </receiver>
+<!--        android:priority="100"设置广播优先级-->
     </application>
 
 </manifest>

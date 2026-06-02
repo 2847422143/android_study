@@ -2,6 +2,7 @@ package com.example.android_study;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.content.ComponentName;
 import android.content.ContentResolver;
@@ -57,7 +58,9 @@ public class MainActivity extends AppCompatActivity {
     private ObserverImpl ObserverImpl1 = new ObserverImpl("小周");
     private ObserverImpl ObserverImpl2 = new ObserverImpl("小李");
     private DynamicBroadcase dynamicBroadcase;
+    private LocalBroadcastManager localBroadcastManager;
     public static final String ACTION_TEST = "android.intent.action.LXC.TEST";
+    public static final String ACTION_TEST1 = "android.intent.action.LXC.TEST1";
     private EditText etInput;
     private TextView tvResult;
     // 拼接流式返回的内容
@@ -111,6 +114,12 @@ public class MainActivity extends AppCompatActivity {
         // 按钮6：静态广播
         findViewById(R.id.btn_localbroad).setOnClickListener(v -> broadSend());
 
+        // 按钮7：动态广播
+        findViewById(R.id.btn_localbroad_order).setOnClickListener(v -> broadSend1());
+
+        // 按钮8：本地广播
+        findViewById(R.id.btn_localbroad_normal).setOnClickListener(v -> broadSend2());
+
         // 按钮E：静态广播
         findViewById(R.id.btn_send_normal).setOnClickListener(v -> EventBusSend());
 
@@ -122,10 +131,15 @@ public class MainActivity extends AppCompatActivity {
      * 初始化所有需要初始化的东西
      */
     private void registerAction() {
+        localBroadcastManager = LocalBroadcastManager.getInstance(this);
+
+        // 动态注册广播接收器
         dynamicBroadcase = new DynamicBroadcase();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ACTION_TEST);
+        intentFilter.addAction(ACTION_TEST1);
         registerReceiver(dynamicBroadcase,intentFilter);
+//        localBroadcastManager.registerReceiver(dynamicBroadcase, intentFilter);//本地广播注册 只能接收本应用的广播
 
         etInput = findViewById(R.id.et_input);
         tvResult = findViewById(R.id.tv_result);
@@ -359,7 +373,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void broadSend(){
-        //TODO 发送广播
+        //TODO 发送标准广播
         Intent intent = new Intent();
         intent.setAction(ACTION_TEST);
         intent.putExtra("name",TAG);
@@ -368,8 +382,41 @@ public class MainActivity extends AppCompatActivity {
         intent.setPackage(getPackageName());
         // 可选：添加FLAG，允许后台执行（部分场景需要）
         intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
+        //发送标准广播
         sendBroadcast(intent);
     }
+
+    private void broadSend1(){
+        //TODO 发送有序广播
+        Intent intent = new Intent();
+        intent.setAction(ACTION_TEST);
+        intent.putExtra("name",TAG);
+        intent.putExtra("message","今天天气");
+        // 关键：指定广播接收方的包名（当前应用包名）
+        intent.setPackage(getPackageName());
+        // 可选：添加FLAG，允许后台执行（部分场景需要）
+        intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
+        //发送有序广播
+        //第一个参数：广播意图，用于指定接收广播的组件
+        //第二个参数：权限，用于组件接收广播的权限检查
+        sendOrderedBroadcast(intent, null);
+    }
+
+
+    private void broadSend2(){
+        //TODO 发送本地广播
+        Intent intent = new Intent();
+        intent.setAction(ACTION_TEST);
+        intent.putExtra("name",TAG);
+        intent.putExtra("message","今天天气");
+        // 关键：指定广播接收方的包名（当前应用包名）
+        intent.setPackage(getPackageName());
+        // 可选：添加FLAG，允许后台执行（部分场景需要）
+        intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
+        //发送本地广播
+        localBroadcastManager.sendBroadcast(intent);
+    }
+
 
     private void modelSend(){
         String input = etInput.getText().toString().trim();
