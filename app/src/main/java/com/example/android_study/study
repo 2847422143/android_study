@@ -17,3 +17,9 @@
                                    MODE_APPEND: 文件已经存在时，继续向里面的写内容会
                                    MODE_WORLD_READABLE和MODE_WORLD_WRITEABLE :允许其他应用程序队我们程序中的文件进行读写操作
 
+4.SharedPreferences存储
+    健值对方式存储
+    获取sharedPreferences对象获取方法
+        1.context.getSharedPreferences("data",Context.MODE_PRIVATE); 第一个参数是指定sharedPreference的文件名
+                                                                     第二个参数是操作模式（只有一种MODE_PRIVATE：表示只有当前的应用程序才可以对这个文件进行读写）
+        2.PreferenceManager.getDefaultSharedPreferences(this);静态方法，只接收一个参数Context，并自动使用当前应用程序的包名作为前缀来命名SharePreference文件

@@ -7,9 +7,11 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -49,6 +51,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     //AppCompatActivity是AndroidX中提供的一种向下兼容的Activity
@@ -536,6 +540,25 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return content.toString();
+    }
+
+    public static void sharePreferenceSave(Context context, String name,String a ,String b){
+        SharedPreferences sharedPreferences= context.getSharedPreferences(name,MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("a",a);
+        editor.putString("b",b);
+        editor.apply(); //无返回值，异步，不阻塞当前线程
+        boolean result = editor.commit();//有返回值，同步，会阻塞当前进程
+    }
+
+    public static Map<String, String> sharePreferenceLoad(Context context, String name){
+        SharedPreferences sharedPreferences= context.getSharedPreferences(name,MODE_PRIVATE);
+        String a = sharedPreferences.getString("a", null);
+        String b = sharedPreferences.getString("b", null);
+        Map<String, String> map = new HashMap<>();
+        map.put("a", a);
+        map.put("b", b);
+        return map;
     }
 
     /**
