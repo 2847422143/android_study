@@ -1,13 +1,20 @@
 package com.example.android_study.AcitivityStudy;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -17,13 +24,24 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.android_study.MainActivity;
 import com.example.android_study.R;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
+
 public class FirstActivity extends AppCompatActivity {
 
     private static final String TAG = "FirstActivity";
+
+    ArrayAdapter<String> adapter;
+
+    List<String> contactsList = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,6 +131,81 @@ public class FirstActivity extends AppCompatActivity {
             progressBar2.setProgress(progress);
         });
 
+
+        Button button4 = findViewById(R.id.make_call);
+        button4.setOnClickListener(v -> {
+            if(ContextCompat.checkSelfPermission(FirstActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED){
+                //没有授权
+                ActivityCompat.requestPermissions(FirstActivity.this, new String[]{Manifest.permission.CALL_PHONE}, 1);
+            } else {
+                call();
+            }
+
+        });
+
+        ListView contarc = findViewById(R.id.contacts_view);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, contactsList);
+        contarc.setAdapter(adapter);
+        if(ContextCompat.checkSelfPermission(FirstActivity.this, Manifest.permission.READ_CONTACTS)!= PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(FirstActivity.this, new String[]{Manifest.permission.READ_CONTACTS}, 2);
+        } else {
+            readContacts();
+        }
+
+    }
+
+    private void readContacts(){
+        Cursor cursor = null;
+         try {
+             cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
+             if(cursor != null ){
+                 while (cursor.moveToNext()) {
+                     @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+                     @SuppressLint("Range") String number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                     contactsList.add(name + " : " + number);
+                 }
+                 adapter.notifyDataSetChanged();
+             }
+         } catch (Exception e) {
+             e.printStackTrace();
+         } finally {
+             if (cursor != null) {
+                 cursor.close();
+             }
+         }
+        adapter.addAll(contactsList);
+    }
+
+    private void call (){
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("tel:123456789"));
+            startActivity(intent);
+        } catch (SecurityException e){
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode){
+            case 1:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    call();
+                } else {
+                    Toast.makeText(this, "You denied the permission", Toast.LENGTH_SHORT).show();
+                }
+                break;
+                case 2:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    readContacts();
+                } else {
+                    Toast.makeText(this, "You denied the permission", Toast.LENGTH_SHORT).show();
+                }
+            default:
+                break;
+        }
     }
 
     //重写onCreateOptionsMenu 去关联自己的菜单控件
@@ -126,14 +219,11 @@ public class FirstActivity extends AppCompatActivity {
     //重写onOptionsItemSelected 处理菜单点击事件
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.add_item:
-                Toast.makeText(this, "You clicked Add", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.remove_item:
-                Toast.makeText(this, "You clicked Remove", Toast.LENGTH_SHORT).show();
-                break;
-            default:
+        int id = item.getItemId();
+        if (id == R.id.add_item) {
+            Toast.makeText(this, "You clicked Add", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.remove_item) {
+            Toast.makeText(this, "You clicked Remove", Toast.LENGTH_SHORT).show();
         }
 
         return true;

@@ -42,12 +42,11 @@ public class SecondActivity extends Activity implements View.OnClickListener{
     //另一种点击事件处理方式
     @Override
     public void onClick(View view) {
-       switch (view.getId()){
-           case R.id.button2_1:
-               Intent intent = new Intent();
-               intent.setClass(SecondActivity.this, FirstActivity.class);
-               startActivity(intent);
-               break;
+       int id = view.getId();
+       if (id == R.id.button2_1) {
+           Intent intent = new Intent();
+           intent.setClass(SecondActivity.this, FirstActivity.class);
+           startActivity(intent);
        }
     }
 }

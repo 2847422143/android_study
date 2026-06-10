@@ -41,12 +41,9 @@ public class FiveActivity extends AppCompatActivity implements View
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.button:
-                replaceFragment(new AnotherRightFragment());
-                break;
-            default:
-                break;
+        int id = view.getId();
+        if (id == R.id.button) {
+            replaceFragment(new AnotherRightFragment());
         }
     }
 

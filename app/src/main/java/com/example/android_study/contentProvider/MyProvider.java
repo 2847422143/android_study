@@ -39,6 +39,8 @@ public class MyProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
+        //通常在这里完成对数据库的创建和升级，返回true标识 内容提供者创建成功
+        Log.d(TAG, "onCreate: ");
         mContext =getContext();
         // 在ContentProvider创建时对数据库进行初始化
         // 运行在主线程，故不能做耗时操作,此处仅作展示
@@ -103,9 +105,19 @@ public class MyProvider extends ContentProvider {
     }
 
     //（返回数据 MIME 类型）
+    //返回值是一个 MIME 字符串，描述数据类型，主要给系统和其他应用 判断如何处理你提供的数据 用。
     @Nullable
     @Override
     public String getType(@NonNull Uri uri) {
+//        数据类型
+//                格式
+//        示例
+//        多条数据（目录）
+//        vnd.android.cursor.dir/vnd.<authority>.<path>
+//                vnd.android.cursor.dir/vnd.com.example.app.book
+//        单条数据（条目）
+//        vnd.android.cursor.item/vnd.<authority>.<path>
+//                vnd.android.cursor.item/vnd.com.example.app.book
         return null;
     }
 

@@ -23,3 +23,9 @@
         1.context.getSharedPreferences("data",Context.MODE_PRIVATE); 第一个参数是指定sharedPreference的文件名
                                                                      第二个参数是操作模式（只有一种MODE_PRIVATE：表示只有当前的应用程序才可以对这个文件进行读写）
         2.PreferenceManager.getDefaultSharedPreferences(this);静态方法，只接收一个参数Context，并自动使用当前应用程序的包名作为前缀来命名SharePreference文件
+
+5.内容提供者（contentProvider）：用于不同程序之间实现数据共享的功能，并且确保了数据的安全性
+
+6.权限可以分为2类
+    普通权限：系统会自动授权，不会直接威胁到用户的安全和隐私的权限
+    危险权限：可能会触及用户隐私，或者对设备安全性造成影响的权限。如：获取设备联系人信息灯  对于这类权限，需要用户手动授权 具体可见img_6.png

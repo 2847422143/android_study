@@ -48,4 +48,15 @@
         android:layout_height="wrap_content"
         style="?android:attr/progressBarStyleHorizontal"
         android:max="100"/>
+
+    <Button
+        android:id="@+id/make_call"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="make call"/>
+
+    <ListView
+        android:id="@+id/contacts_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 </LinearLayout>
