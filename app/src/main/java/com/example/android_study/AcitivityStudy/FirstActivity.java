@@ -2,9 +2,12 @@ package com.example.android_study.AcitivityStudy;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -141,6 +144,19 @@ public class FirstActivity extends AppCompatActivity {
                 call();
             }
 
+        });
+
+        Button button5 = findViewById(R.id.send_notice);
+        button5.setOnClickListener(v -> {
+            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            Notification notification = new Notification.Builder(FirstActivity.this)
+                    .setContentTitle("This is content title")//通知的标题内容
+                    .setContentText("This is content text")//通知的正文内容
+                    .setWhen(System.currentTimeMillis())//通知被创造的时间
+                    .setSmallIcon(R.mipmap.ic_launcher)//小图标
+                    .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))//大图标
+                    .build();
+            notificationManager.notify(1, notification);
         });
 
         ListView contarc = findViewById(R.id.contacts_view);

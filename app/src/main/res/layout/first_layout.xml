@@ -55,6 +55,12 @@
         android:layout_height="wrap_content"
         android:text="make call"/>
 
+    <Button
+        android:id="@+id/send_notice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="send notice"/>
+
     <ListView
         android:id="@+id/contacts_view"
         android:layout_width="match_parent"
