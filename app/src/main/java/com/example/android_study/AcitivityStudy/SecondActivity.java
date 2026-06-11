@@ -39,11 +39,10 @@ public class SecondActivity extends Activity implements View.OnClickListener{
         super.onDestroy();
     }
 
-    //另一种点击事件处理方式
+    //另一种点击事件处理方式·
     @Override
     public void onClick(View view) {
-       int id = view.getId();
-       if (id == R.id.button2_1) {
+       if (view.getId() == R.id.button2_1) {
            Intent intent = new Intent();
            intent.setClass(SecondActivity.this, FirstActivity.class);
            startActivity(intent);

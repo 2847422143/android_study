@@ -3,7 +3,10 @@ package com.example.android_study.AcitivityStudy;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.os.Build;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -32,6 +35,7 @@ import androidx.core.content.ContextCompat;
 
 import com.example.android_study.MainActivity;
 import com.example.android_study.R;
+import com.example.android_study.SQLite.OneActivity;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -70,7 +74,7 @@ public class FirstActivity extends AppCompatActivity {
 //            finish();//销毁当前活动  效果和按下back按键是一样的
 
             //显性Intent
-            Intent intent = new Intent(FirstActivity.this, SevenActivity.class);
+            Intent intent = new Intent(FirstActivity.this, OneActivity.class);
             intent.putExtra("date","hello");
 //            startActivity(intent); // 专门用于启动活动
             startActivityForResult(intent, 1); //期望启动的活动销毁后返回数据给这个活动
@@ -148,15 +152,17 @@ public class FirstActivity extends AppCompatActivity {
 
         Button button5 = findViewById(R.id.send_notice);
         button5.setOnClickListener(v -> {
-            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-            Notification notification = new Notification.Builder(FirstActivity.this)
-                    .setContentTitle("This is content title")//通知的标题内容
-                    .setContentText("This is content text")//通知的正文内容
-                    .setWhen(System.currentTimeMillis())//通知被创造的时间
-                    .setSmallIcon(R.mipmap.ic_launcher)//小图标
-                    .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))//大图标
-                    .build();
-            notificationManager.notify(1, notification);
+            Log.d(TAG, "send_notice");
+            // Android 13 (API 33) 及以上需要动态申请 POST_NOTIFICATIONS 运行时权限
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                if (ContextCompat.checkSelfPermission(FirstActivity.this, Manifest.permission.POST_NOTIFICATIONS)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(FirstActivity.this,
+                            new String[]{Manifest.permission.POST_NOTIFICATIONS}, 3);
+                    return; // 等待用户授权后再发送
+                }
+            }
+            sendNotification();
         });
 
         ListView contarc = findViewById(R.id.contacts_view);
@@ -219,9 +225,51 @@ public class FirstActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(this, "You denied the permission", Toast.LENGTH_SHORT).show();
                 }
+                break;
+            case 3:
+                // POST_NOTIFICATIONS 权限回调（Android 13+）
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    sendNotification();
+                } else {
+                    Toast.makeText(this, "通知权限被拒绝，无法发送通知", Toast.LENGTH_SHORT).show();
+                }
+                break;
             default:
                 break;
         }
+    }
+
+    private void sendNotification() {
+        Intent intent = new Intent(FirstActivity.this, MainActivity.class);
+        // Android 12 (API 31) 及以上必须显式指定 FLAG_IMMUTABLE 或 FLAG_MUTABLE
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+        // Android 8.0 (API 26) 及以上必须创建 NotificationChannel，否则通知无法显示
+        String channelId = "default_channel";
+        NotificationChannel channel = new NotificationChannel(
+                channelId,
+                "默认通知渠道",
+                NotificationManager.IMPORTANCE_DEFAULT
+        );
+        channel.setDescription("用于显示普通通知");
+        notificationManager.createNotificationChannel(channel);
+
+        Notification notification = new Notification.Builder(this, channelId)
+                .setContentTitle("This is content title")  // 通知标题
+                .setContentText("This is content text")    // 通知正文
+                .setWhen(System.currentTimeMillis())        // 通知创建时间
+                .setSmallIcon(R.drawable.img)               // 小图标（需PNG，不能用XML自适应图标）
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.img)) // 大图标
+                .setContentIntent(pendingIntent)            // 点击通知后跳转的Activity
+                .setAutoCancel(true)                        // 点击后自动消除通知
+
+//        也可以在打开的Activity中关闭
+//        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+//        notificationManager.cancel(1)，这里的1和下面的id一直
+                .build();
+        notificationManager.notify(1, notification);
     }
 
     //重写onCreateOptionsMenu 去关联自己的菜单控件

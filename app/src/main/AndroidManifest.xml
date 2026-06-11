@@ -21,6 +21,9 @@
         android:theme="@style/Theme.Android_study"
         tools:targetApi="31">
         <activity
+            android:name=".SQLite.OneActivity"
+            android:exported="false" />
+        <activity
             android:name=".AcitivityStudy.SevenActivity"
             android:exported="false" />
         <activity
@@ -94,7 +97,6 @@
                 <action android:name="android.intent.action.LXC.TEST1" />
             </intent-filter>
         </receiver>
-<!--        android:priority="100"设置广播优先级-->
     </application>
 
 </manifest>
