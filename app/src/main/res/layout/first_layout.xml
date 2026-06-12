@@ -60,6 +60,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="send notice"/>
+    <Button
+        android:id="@+id/photo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="photo"/>
 
     <ListView
         android:id="@+id/contacts_view"

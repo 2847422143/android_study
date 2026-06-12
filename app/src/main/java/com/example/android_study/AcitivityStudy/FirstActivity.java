@@ -165,6 +165,11 @@ public class FirstActivity extends AppCompatActivity {
             sendNotification();
         });
 
+        Button button6 = findViewById(R.id.photo);
+        button6.setOnClickListener(v -> {
+            Intent intent = new Intent(FirstActivity.this, nineActivity.class);
+            startActivity(intent);
+        });
         ListView contarc = findViewById(R.id.contacts_view);
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, contactsList);
         contarc.setAdapter(adapter);
@@ -258,12 +263,25 @@ public class FirstActivity extends AppCompatActivity {
 
         Notification notification = new Notification.Builder(this, channelId)
                 .setContentTitle("This is content title")  // 通知标题
-                .setContentText("This is content text")    // 通知正文
+                //setContentText方法一般只适用于短文本
+                .setContentText("This is content text,aaaaasdaddsadsadsadsadsadsadwdqdqw wjbuduihdjndjasbdhsa dsjkand sajkdnsabdwuiqhd dklsandjsabduiqwbdoind ja")    // 通知正文
+                //如果想显示长文本就可以用setStyle()
+//                .setStyle(new Notification.BigTextStyle().bigText("This is content text,aaaaasdaddsadsadsadsadsadsadwdqdqw wjbuduihdjndjasbdhsa dsjkand sajkdnsabdwuiqhd dklsandjsabduiqwbdoind ja"))
                 .setWhen(System.currentTimeMillis())        // 通知创建时间
                 .setSmallIcon(R.drawable.img)               // 小图标（需PNG，不能用XML自适应图标）
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.img)) // 大图标
                 .setContentIntent(pendingIntent)            // 点击通知后跳转的Activity
                 .setAutoCancel(true)                        // 点击后自动消除通知
+
+                // setPriority() 用于设置通知的优先级，影响通知在通知栏中的显示方式和排序位置
+                // 可选参数（仅适用于 Android 7.1 及以下，Android 8.0+ 由 NotificationChannel 的 IMPORTANCE 控制）：
+                // Notification.PRIORITY_MIN  (-2)  最低优先级，通知栏中不显眼，用户可能看不到
+                // Notification.PRIORITY_LOW  (-1)  低优先级，显示较小的图标
+                // Notification.PRIORITY_DEFAULT (0)  默认优先级
+                // Notification.PRIORITY_HIGH  (1)  高优先级，更醒目，可能弹出提醒
+                // Notification.PRIORITY_MAX   (2)  最高优先级，以 heads-up 悬浮通知形式弹出
+                .setPriority(Notification.PRIORITY_MAX)
+
 
 //        也可以在打开的Activity中关闭
 //        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
