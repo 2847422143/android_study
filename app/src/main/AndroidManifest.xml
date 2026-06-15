@@ -24,6 +24,9 @@
         android:theme="@style/Theme.Android_study"
         tools:targetApi="31">
         <activity
+            android:name=".AcitivityStudy.NetWorkActivity"
+            android:exported="false" />
+        <activity
             android:name=".AcitivityStudy.nineActivity"
             android:exported="false" />
         <activity
@@ -105,8 +108,8 @@
         </receiver>
 
         <provider
-            android:authorities="com.example.android.fileprovider"
             android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.android.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
